@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import sqlite3
 
-# --- DATABASE SETUP ---
 def setup_db():
     conn = sqlite3.connect("college_gui.db")
     cursor = conn.cursor()
@@ -19,7 +18,6 @@ def setup_db():
     conn.commit()
     conn.close()
 
-# --- GUI APPLICATION CLASS ---
 class StudentApp:
     def __init__(self, root):
         self.root = root
@@ -29,17 +27,14 @@ class StudentApp:
 
         setup_db()
 
-        # --- TITLE ---
         title = tk.Label(self.root, text="Student Management System", font=("Arial", 20, "bold"), bg="#004080", fg="white")
         title.pack(side=tk.TOP, fill=tk.X)
 
-        # --- LEFT FRAME: DATA ENTRY (CRUD Forms) ---
         entry_frame = tk.Frame(self.root, bg="white", bd=2, relief=tk.RIDGE)
         entry_frame.place(x=20, y=60, width=350, height=420)
 
         tk.Label(entry_frame, text="Manage Records", font=("Arial", 15, "bold"), bg="white").grid(row=0, columnspan=2, pady=10)
 
-        # Input Fields
         tk.Label(entry_frame, text="Roll Number:", bg="white", font=("Arial", 11)).grid(row=1, column=0, pady=10, padx=10, sticky="w")
         self.roll_var = tk.StringVar()
         tk.Entry(entry_frame, textvariable=self.roll_var, font=("Arial", 11), bd=1, relief=tk.SOLID).grid(row=1, column=1, pady=10, padx=10)
@@ -60,7 +55,6 @@ class StudentApp:
         self.attendance_var = tk.StringVar()
         tk.Entry(entry_frame, textvariable=self.attendance_var, font=("Arial", 11), bd=1, relief=tk.SOLID).grid(row=5, column=1, pady=10, padx=10)
 
-        # Buttons
         btn_frame = tk.Frame(entry_frame, bg="white")
         btn_frame.grid(row=6, columnspan=2, pady=20)
 
@@ -69,7 +63,6 @@ class StudentApp:
         tk.Button(btn_frame, text="Delete", width=8, bg="#dc3545", fg="white", command=self.delete_student).grid(row=0, column=2, padx=5)
         tk.Button(btn_frame, text="Clear", width=8, bg="#6c757d", fg="white", command=self.clear_fields).grid(row=0, column=3, padx=5)
 
-        # --- RIGHT FRAME: DATA TABLE (Viewing Records) ---
         table_frame = tk.Frame(self.root, bd=2, relief=tk.RIDGE)
         table_frame.place(x=390, y=60, width=590, height=420)
 
@@ -94,12 +87,10 @@ class StudentApp:
 
         self.student_table.pack(fill=tk.BOTH, expand=1)
         
-        # Bind clicking a row to fill the entry fields
         self.student_table.bind("<ButtonRelease-1>", self.get_cursor)
 
         self.fetch_data()
 
-    # --- CRUD FUNCTIONS ---
     def add_student(self):
         if self.roll_var.get() == "" or self.name_var.get() == "":
             messagebox.showerror("Error", "Roll Number and Name are required!")
